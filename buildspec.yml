@@ -6,16 +6,14 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 654654570586.dkr.ecr.us-east-1.amazonaws.com
       - IMAGE_TAG=latest
+      - REPO_URI=654654570586.dkr.ecr.us-east-1.amazonaws.com/simple-python-app
   build:
     commands:
-      - echo Building Docker image...
-      - docker build -t my-python-app:$IMAGE_TAG .
+      - echo Build started on `date`
+      - docker build -t $REPO_URI:$IMAGE_TAG .
   post_build:
     commands:
-      - echo Tagging and pushing image to ECR...
-      - docker tag my-python-app:$IMAGE_TAG 654654570586.dkr.ecr.us-east-1.amazonaws.com/my-python-app:$IMAGE_TAG
-      - docker push 654654570586.dkr.ecr.us-east-1.amazonaws.com/my-python-app:$IMAGE_TAG
-
+      - echo Build completed on `date`
+      - docker push $REPO_URI:$IMAGE_TAG
 artifacts:
-  files:
-    - '**/*'
+  files: '**/*'
