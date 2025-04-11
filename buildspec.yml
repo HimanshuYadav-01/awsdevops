@@ -1,19 +1,22 @@
 version: 0.2
 
+env:
+  secrets-manager:
+    DOCKER_USERNAME: dockerHubCredentials:username
+    DOCKER_PASSWORD: dockerHubCredentials:password
+
 phases:
   pre_build:
     commands:
-      - aws --version
-      - $(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 654654570586.dkr.ecr.us-east-1.amazonaws.com)
-      - REPOSITORY_URI=654654570586.dkr.ecr.us-east-1.amazonaws.com/doker-python-app
-      - IMAGE_TAG=latest
-
+      - echo Logging in to Docker Hub...
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   build:
     commands:
-      - echo "Building the Docker image..."
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
-
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t docker-python-app .
+      - docker tag docker-python-app vikasy/docker-python-app:latest
   post_build:
     commands:
-      - echo "Pushing the Docker image to ECR..."
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Pushing the Docker image to Docker Hub...
+      - docker push vikasy/docker-python-app:latest
