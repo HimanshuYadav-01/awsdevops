@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <your-account-id>.dkr.ecr.us-east-1.amazonaws.com
+      - IMAGE_TAG=latest
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t my-python-app:$IMAGE_TAG .
+  post_build:
+    commands:
+      - echo Tagging and pushing image to ECR...
+      - docker tag my-python-app:$IMAGE_TAG <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/my-python-app:$IMAGE_TAG
+      - docker push <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/my-python-app:$IMAGE_TAG
+
+artifacts:
+  files:
+    - '**/*'
