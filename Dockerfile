@@ -1,14 +1,17 @@
-# Use official Python base image
-FROM python:3.11
+# Use the official Python image
+FROM python:3.9-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy all files from current directory (main.py and requirements.txt)
-COPY . .
+# Copy the application code
+COPY my-python-app/ .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the app
+# Expose port for Flask
+EXPOSE 5000
+
+# Run the application
 CMD ["python", "main.py"]
