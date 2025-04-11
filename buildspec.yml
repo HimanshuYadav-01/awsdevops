@@ -6,7 +6,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 654654570586.dkr.ecr.us-east-1.amazonaws.com
       - IMAGE_TAG=latest
-      - REPO_URI=654654570586.dkr.ecr.us-east-1.amazonaws.com/simple-python-app
+      - REPO_URI=654654570586.dkr.ecr.us-east-1.amazonaws.com/doker-python-app
   build:
     commands:
       - echo Build started on `date`
