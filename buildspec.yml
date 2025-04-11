@@ -8,18 +8,17 @@ env:
 phases:
   pre_build:
     commands:
-      - echo Logging in to Docker Hub...
+      - echo Logging in to Docker Hub...
       - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+      - echo "Login result:" $(docker info | grep Username)
   build:
     commands:
       - echo Building the Docker image...
       - docker build -t docker-python-app .
+      - docker images
   post_build:
     commands:
-      - echo Tagging and pushing the image...
+      - echo Tagging the image…
       - docker tag docker-python-app vikasy/docker-python-app:latest
+      - echo Pushing to Docker Hub…
       - docker push vikasy/docker-python-app:latest
-
-artifacts:
-  files:
-    - '**/*'
