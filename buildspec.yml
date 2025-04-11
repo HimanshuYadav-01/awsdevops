@@ -19,6 +19,6 @@ phases:
   post_build:
     commands:
       - echo Tagging the image…
-      - docker tag docker-python-app vikasy/docker-python-app:latest
+      - docker tag docker-python-app vikascy/docker-python-app:latest
       - echo Pushing to Docker Hub…
       - docker push vikasy/docker-python-app:latest
